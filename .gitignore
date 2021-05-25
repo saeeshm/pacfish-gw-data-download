@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.vscode/
+__pycache__/
+_ref_folder.lnk
+data/
+geckodriver.log
