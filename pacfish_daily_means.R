@@ -35,7 +35,6 @@ daily_mean <- pac_stations %>%
   # Summarizing values
   summarise("STATION_NAME" = get_unique(STATION_NAME),
             "Value" = mean(Value), 
-            "Parameter" = get_unique(Parameter),
             "Code" = get_unique(Code),
             "Comments" = get_unique(Comments)) %>% 
   ungroup() %>% 
@@ -47,13 +46,13 @@ daily_mean <- pac_stations %>%
   select(STATION_NUMBER, STATION_NAME, Date, Value, Parameter, Code, Comments)
 
 # Reading any existing mean data and anti-joining to only get unique rows
-if(file.exists(path_to_db)){
+if (file.exists(path_to_db)) {
   # Existing mean data
   curr_mean <- read_csv(path_to_db,  col_types = "ccDdcic")
   # Anti-joining to remove any overlapping values
   daily_mean <- anti_join(daily_mean, curr_mean, by = c("STATION_NUMBER", "Date"))
   # If there are no unique rows left, printing a status statement
-  if(nrow(daily_mean) == 0){
+  if (nrow(daily_mean) == 0) {
     print("All data already present in the table! Process terminated.")
   }else{
     write_csv(daily_mean, path_to_db, append = T)
