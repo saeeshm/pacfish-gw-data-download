@@ -26,6 +26,8 @@ path_to_ref_tab = 'data/Pacfish Monitoring stations 2021.xlsx'
 path_to_dat_tab = 'data/pacfish_stations.csv'
 # How many days worth of data is required
 time_diff = timedelta(days=30)
+# Path to the geckodriver that runs firefox in automative mode
+gecko_path = 'E:/saeeshProjects/pacfish_scraping/geckodriver'
 
 # %% ==== Reading the reference table for station names and IDs ====
 ref_tab = pd.read_excel(path_to_ref_tab)[["STATION_NAME", "STATION_NUMBER"]]
