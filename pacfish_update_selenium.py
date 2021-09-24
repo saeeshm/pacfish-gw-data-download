@@ -10,24 +10,25 @@ import pandas as pd
 from datetime import datetime, timedelta
 from selenium import webdriver
 from bs4 import BeautifulSoup
+from io import StringIO
+from sqlalchemy import create_engine
 
 # %% ==== Initalizing global variables ====
 
 # The path to the directory where the the update report from each run should be
 # stored. Defaults to the working directory
-path_to_report = 'data/update_report.txt'
-# Path to the directory where data archives are stored
-path_to_archive = 'data/archive'
+path_to_report = 'update_report.txt'
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
 path_to_ref_tab = 'data/Pacfish Monitoring stations 2021.xlsx'
-# Path to the station csv that needs to be update with new station data.
-# Defaults to the data folder under the current working directory
-path_to_dat_tab = 'data/pacfish_stations.csv'
+# Database connection
+db = create_engine('postgresql+psycopg2://saeesh:admin@localhost:5432/gws?options=-csearch_path%3Dpacfish')
+conn = db.raw_connection()
+cursor = conn.cursor()
 # How many days worth of data is required
 time_diff = timedelta(days=30)
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = 'E:/saeeshProjects/pacfish_scraping/geckodriver'
+gecko_path = '/Users/saeesh/webdrivers/geckodriver'
 
 # %% ==== Reading the reference table for station names and IDs ====
 ref_tab = pd.read_excel(path_to_ref_tab)[["STATION_NAME", "STATION_NUMBER"]]
@@ -64,25 +65,17 @@ dtype_dict = {
     'Comments': 'str',
 }
 
-# Reading data, and ensuring that the Date column is parsed as a pandas timestamp
-dat_tab = pd.read_csv(
-    path_to_dat_tab,
-    parse_dates=['Date'],
-    converters={'Code': lambda x: '' if str(x) == 'nan' else x,
-                'Comments': lambda x: '' if str(x) == 'nan' else x}
+# Querying only the last 30 days of data from the database
+cursor.execute(
+    """
+    select * from pacfish.hourly 
+    where "Date" >= '{}'
+    """.format((datetime.today() - time_diff).strftime('%Y-%m-%d'))
 )
-# Creating a timestamp of 30 days prior to today
-filter_tstamp = (datetime.today() - timedelta(days=30))
-# Creating a filter mask to only pick data for the last 30 days (really imp for
-# efficiency since we only need to refer to recent data to ensure a lack of
-# overlap)
-filter_mask = dat_tab['Date'] > filter_tstamp
-# Applying the filter mask to select the df
-dat_tab = dat_tab[filter_mask]
-# Removing the filter objects as they're quite large and no longer necessary
-del([filter_tstamp, filter_mask])
-# Ensuring appropriate types in the remaining table
-dat_tab.astype(dtype_dict)
+# Reading the result
+curr_data = pd.DataFrame(cursor.fetchall(), columns=list(dtype_dict.keys()))
+# Ensuring type consistenct
+curr_data = curr_data.astype(dtype_dict)
 
 # %% ==== Helper function for formatting data to GW format ====
 
@@ -243,7 +236,7 @@ links['Temperature'] = {name: link for name,
 # %% ==== Automating downloads with Selenium ====
 
 # Opening firefox driver
-browser = webdriver.Firefox()
+browser = webdriver.Firefox(executable_path = gecko_path)
 
 # Getting the correctly formatted date from when we want data
 start_date = (datetime.today() - time_diff).strftime('%b %-d, %Y 00:00')
@@ -304,7 +297,7 @@ for url_grp in links:
             # Doing an anti-join with existing set of recent data, to ensure
             # overlaps are removed. To do so, first a left join with an 'indicator'
             # is needed
-            left_joined = df.merge(dat_tab, how='left', indicator=True)
+            left_joined = df.merge(curr_data, how='left', indicator=True)
             # Keeping only those df rows where the merge indicator says "left_only"
             left_joined = left_joined[left_joined._merge == "left_only"]
             df = left_joined.drop(columns="_merge")
@@ -313,9 +306,14 @@ for url_grp in links:
             df = df[['STATION_NUMBER', 'STATION_NAME', 'Date', 'Time',
                     'Value', 'Parameter', 'Code', 'Comments']]
 
-            # Appending these rows to a csv titled 'new-dat'
-            df.to_csv('data/new_dat.csv',
-                      mode='a', header=False, index=False)
+            # Initialize an empty string buffer
+            sio = StringIO()    
+            # Writing the data to a csv buffer
+            df.to_csv(sio, sep = ',', header=False, index=False, columns = list(dtype_dict.keys()))
+            sio.seek(0)
+            # Appending to database from from buffer
+            cursor.copy_from(sio, "hourly", sep = ',')
+            conn.commit()
 
             # Status update
             print("Successfully completed data pull for Station: ",
