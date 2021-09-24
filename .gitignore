@@ -1,9 +1,11 @@
+.git
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 .vscode/
 __pycache__/
-_ref_folder.lnk
+*.lnk
 data/
+geckodriver/
 geckodriver.log
