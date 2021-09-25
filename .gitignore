@@ -10,3 +10,4 @@ data/
 geckodriver/
 geckodriver.log
 pacfish_tidying.R
+credentials.json

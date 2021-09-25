@@ -6,43 +6,50 @@
 
 # ==== Loading libraries ====
 library(DBI)
-library(RPostgreSQL)
+library(RPostgres)
 library(lubridate)
+library(rjson)
 
 # ==== Reading data ====
 
+# Credentials files
+creds <- fromJSON(file = 'credentials.json')
+
+# Setting default schema unless pre-specified
+if (is.null(creds$schema)) creds$schema <- 'pacfish'
+
 # Opening database connection
-conn <- dbConnect("PostgreSQL", 
-                  host = 'localhost', dbname = 'gws', 
-                  user = 'saeesh', password = 'admin')
+conn <- dbConnect(RPostgres::Postgres(), 
+                  host = creds$host, dbname = creds$dbname, 
+                  user = creds$user, password = creds$password)
 
 # ==== Daily mean dataset ====
 
 # Dropping the table if it exists
-dbExecute(conn, 'drop table if exists pacfish.daily')
+dbExecute(conn, paste0('drop table if exists ', creds$schema, '.daily'))
 
 # Create the daily mean table from the temp table
-dbExecute(conn, 'create table pacfish.daily as (
+dbExecute(conn, paste0('create table ', creds$schema, '.daily as (
         	select "STATION_NUMBER", max("STATION_NAME") as "STATION_NAME",
             "Date", avg("Value") as "Value", count("Date") as "numObservations",
             "Parameter"
-          from pacfish.hourly
+          from ', creds$schema, '.hourly
           group by "STATION_NUMBER", "Date", "Parameter"
           )
-          ')
+          '))
 
 # ==== Past 1-year dataset ====
 
 # Dropping table if it exists
-dbExecute(conn, 'drop table if exists pacfish.hourly_recent')
+dbExecute(conn, paste0('drop table if exists ', creds$schema, '.hourly_recent'))
 
 # Specifying the timestamp for 1-year ago
 date_filter <- ymd((Sys.Date() - 366))
 
 # Creating a past 1 year dataset from the temptable
 dbExecute(conn, 
-          paste0('create table pacfish.hourly_recent as (', 
+          paste0('create table ', creds$schema, '.hourly_recent as (', 
           'select *
-          from pacfish.hourly where "Date" >= ',
+          from ', creds$schema, '.hourly where "Date" >= ',
           "'", date_filter, "'",
           ')'))

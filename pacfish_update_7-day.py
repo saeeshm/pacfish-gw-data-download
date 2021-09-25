@@ -10,8 +10,28 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from io import StringIO
 from sqlalchemy import create_engine
+from json import load
 
 # %% ==== Initializing user facing global variables ====
+
+# Reading credentials from file
+creds = load(open('credentials.json',))
+
+# Setting the default schema to 'pacfish' unless another was specified in the file
+if 'schema' not in creds.keys():
+    creds['schema'] = 'pacfish'
+
+# Database connection
+db = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}?options=-csearch_path%3D{}'.format(
+    creds['user'],
+    creds['password'],
+    creds['host'],
+    creds['port'],
+    creds['dbname'],
+    creds['schema'],
+))
+conn = db.raw_connection()
+cursor = conn.cursor()
 
 # The path to the directory where the the update report from each run should be
 # stored. Defaults to the working directory
@@ -19,10 +39,7 @@ path_to_report = 'update_report.txt'
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
 path_to_ref_tab = 'data/Pacfish Monitoring stations 2021.xlsx'
-# Database connection
-db = create_engine('postgresql+psycopg2://saeesh:admin@localhost:5432/gws?options=-csearch_path%3Dpacfish')
-conn = db.raw_connection()
-cursor = conn.cursor()
+
 
 # %% ==== Initializing script global variables ====
 

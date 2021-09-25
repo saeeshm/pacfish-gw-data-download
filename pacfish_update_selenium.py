@@ -5,15 +5,34 @@
 # adding it to existing datatables.
 # %% ==== Loading libraries ====
 import requests
-import subprocess
 import pandas as pd
 from datetime import datetime, timedelta
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from io import StringIO
 from sqlalchemy import create_engine
+from json import load
 
 # %% ==== Initalizing global variables ====
+
+# Reading credentials from file
+creds = load(open('credentials.json',))
+
+# Setting the default schema to 'pacfish' unless another was specified in the file
+if 'schema' not in creds.keys():
+    creds['schema'] = 'pacfish'
+
+# Database connection
+db = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}?options=-csearch_path%3D{}'.format(
+    creds['user'],
+    creds['password'],
+    creds['host'],
+    creds['port'],
+    creds['dbname'],
+    creds['schema'],
+))
+conn = db.raw_connection()
+cursor = conn.cursor()
 
 # The path to the directory where the the update report from each run should be
 # stored. Defaults to the working directory
@@ -21,14 +40,10 @@ path_to_report = 'update_report.txt'
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
 path_to_ref_tab = 'data/Pacfish Monitoring stations 2021.xlsx'
-# Database connection
-db = create_engine('postgresql+psycopg2://saeesh:admin@localhost:5432/gws?options=-csearch_path%3Dpacfish')
-conn = db.raw_connection()
-cursor = conn.cursor()
 # How many days worth of data is required
 time_diff = timedelta(days=30)
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = '/Users/saeesh/webdrivers/geckodriver'
+gecko_path = 'E:/saeeshProjects/_webdrivers/geckodriver/geckodriver'
 
 # %% ==== Reading the reference table for station names and IDs ====
 ref_tab = pd.read_excel(path_to_ref_tab)[["STATION_NAME", "STATION_NUMBER"]]
@@ -239,7 +254,7 @@ links['Temperature'] = {name: link for name,
 browser = webdriver.Firefox(executable_path = gecko_path)
 
 # Getting the correctly formatted date from when we want data
-start_date = (datetime.today() - time_diff).strftime('%b %-d, %Y 00:00')
+start_date = (datetime.today() - time_diff).strftime('%b %d, %Y 00:00')
 
 # Iterating over each url and group
 for url_grp in links:
@@ -335,7 +350,7 @@ with open(path_to_report, "w") as f:
     # Printing a header and description
     print('===== Pacfish Hydrometric and Temperature Data Scraper =====', file=f)
     print('', file=f)
-    print('This file gives a summary of the most recent pacfish data update, run via the script "pacfish_scraping.py"', file=f)
+    print('This file gives a summary of the most recent pacfish data update, run via the script "pacfish_update_selenium.py"', file=f)
     print('', file=f)
     # Date of scraping attempt
     print('Last scrape Date: ', str(datetime.now()), file=f)
@@ -352,14 +367,3 @@ with open(path_to_report, "w") as f:
     print('Temperature data station completion status:', file=f)
     print(pd.DataFrame.from_dict(success_status['Temperature'], orient='index').rename(
         columns={0: "Status"}), file=f)
-
-# %% ==== Adding a copy of this run to the archive ====
-
-# Setting a datestamp
-datestamp = datetime.today().strftime("%Y-%m-%d")
-# Archiving the dataset
-subprocess.run(args=('cp ' + path_to_dat_tab + ' ' + path_to_archive + '/pacfish_stations_' +
-                     datestamp + '.csv'), shell=True)
-# Archiving the report
-subprocess.run(args=('cp ' + path_to_report + ' ' + path_to_archive + '/update_report_' +
-                     datestamp + '.txt'), shell=True)
