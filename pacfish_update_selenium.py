@@ -12,6 +12,13 @@ from bs4 import BeautifulSoup
 from io import StringIO
 from sqlalchemy import create_engine
 from json import load
+from optparse import OptionParser
+
+#%% Initializing option parsing
+parser = OptionParser()
+parser.add_option("-d", "--days", dest="days", action="store", default=30,
+                  help="The number of days before today for which data need to be downloaded")
+(options, args) = parser.parse_args()
 
 # %% ==== Initalizing global variables ====
 
@@ -41,7 +48,7 @@ path_to_report = 'update_report.txt'
 # the data folder under the current working directory
 path_to_ref_tab = 'data/Pacfish Monitoring stations 2021.xlsx'
 # How many days worth of data is required
-time_diff = timedelta(days=30)
+time_diff = timedelta(days=options.days)
 # Path to the geckodriver that runs firefox in automative mode
 gecko_path = 'E:/saeeshProjects/_webdrivers/geckodriver/geckodriver'
 
