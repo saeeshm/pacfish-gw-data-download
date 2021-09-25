@@ -1,9 +1,9 @@
 .git
-.Rproj.user
 .Rproj
 .Rhistory
 .RData
 .Ruserdata
+.Rproj.user/
 .vscode/
 __pycache__/
 *.lnk
