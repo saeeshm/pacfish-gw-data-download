@@ -3,12 +3,13 @@
 .Rhistory
 .RData
 .Ruserdata
-.Rproj.user/
+
+*.lnk
+script_archive/
 .vscode/
 __pycache__/
-*.lnk
 data/
 geckodriver/
+
 geckodriver.log
-pacfish_tidying.R
 credentials.json
