@@ -18,6 +18,8 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-d", "--days", dest="days", action="store", default=30,
                   help="The number of days before today for which data need to be downloaded")
+parser.add_option("-g", "--gecko", dest="geckopath", action="store", default='E:/saeeshProjects/_webdrivers/geckodriver/geckodriver',
+                  help="Path to geckodriver, which opens an automated firefox browser")
 (options, args) = parser.parse_args()
 
 # %% ==== Initalizing global variables ====
@@ -50,7 +52,7 @@ path_to_ref_tab = 'data/Pacfish Monitoring stations 2021.xlsx'
 # How many days worth of data is required
 time_diff = timedelta(days=options.days)
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = 'E:/saeeshProjects/_webdrivers/geckodriver/geckodriver'
+gecko_path = options.geckopath
 
 # %% ==== Reading the reference table for station names and IDs ====
 ref_tab = pd.read_excel(path_to_ref_tab)[["STATION_NAME", "STATION_NUMBER"]]
