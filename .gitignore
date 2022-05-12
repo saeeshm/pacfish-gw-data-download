@@ -13,3 +13,5 @@ geckodriver/
 
 geckodriver.log
 credentials.json
+update_status.txt
+update_pacfish.bat
