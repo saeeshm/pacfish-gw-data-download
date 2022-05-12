@@ -5,6 +5,7 @@
 .Ruserdata
 
 *.lnk
+*.bat
 script_archive/
 .vscode/
 __pycache__/
@@ -13,5 +14,4 @@ geckodriver/
 
 geckodriver.log
 credentials.json
-update_status.txt
-update_pacfish.bat
+update_report.txt
