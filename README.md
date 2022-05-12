@@ -2,7 +2,7 @@
 A collection of scripts that download all well data from the [Pacfish Hydrometric Station Network](http://www.pacfish.ca/wcviweather/Default.aspx), collecting them into a PostgreSQL database. The program is designed to be running periodically to regularly update the database as new data becomes available.
 
 ## Limitations
-The program is currently only set up to download available data based on a specified number of days starting from the present. Since each station began recording on a separate data, this script cannot be used to download the entire historical record for each station. This means that to initialize the database, users will manually need to download csv files for all stations and combine them into a single 'hourly' datatable. This program can then ease regularly updates to the database.
+The program is currently only set up to download available data based on a specified number of days starting from the present. Since each station began recording on a separate data, this script cannot be used to download the entire historical record for each station. This means that to initialize the database, users will manually need to download csv files for all stations and combine them into a single 'hourly' datatable. This program can then regularly update the database with new data.
 
 ## Structure
 The program contains 3 primary files, for the following uses:
