@@ -1,5 +1,6 @@
 .git
-.Rproj
+*.Rproj
+.Rprofile
 .Rhistory
 .RData
 .Ruserdata
@@ -15,3 +16,4 @@ geckodriver/
 geckodriver.log
 credentials.json
 update_report.txt
+.Rproj.user

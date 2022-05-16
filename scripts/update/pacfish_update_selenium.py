@@ -38,7 +38,6 @@ db = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}?options=-csearch_path%3
     creds['host'],
     creds['port'],
     creds['dbname'],
-    creds['schema'],
 ))
 conn = db.raw_connection()
 cursor = conn.cursor()
