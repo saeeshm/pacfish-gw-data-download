@@ -19,8 +19,8 @@ creds <- fromJSON(file = 'credentials.json')
 if (is.null(creds$schema)) creds$schema <- 'pacfish'
 
 # Opening database connection
-conn <- dbConnect(RPostgres::Postgres(), 
-                  host = creds$host, dbname = creds$dbname, 
+conn <- dbConnect(RPostgres::Postgres(),
+                  host = creds$host, dbname = creds$dbname,
                   user = creds$user, password = creds$password)
 
 # ==== Daily mean dataset ====
@@ -53,3 +53,6 @@ dbExecute(conn,
           from ', creds$schema, '.hourly where "Date" >= ',
           "'", date_filter, "'",
           ')'))
+
+# ==== Disconnecting ====
+dbDisconnect(conn)
