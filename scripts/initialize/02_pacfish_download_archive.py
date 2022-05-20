@@ -132,7 +132,7 @@ links['Temperature'] = {name: link for name,
 # Opening firefox driver
 browser = webdriver.Firefox(executable_path=gecko_path)
 # url_grp = list(links.keys())[0]
-# url_name = list(links[url_grp].keys())[14]
+# url_name = list(links[url_grp].keys())[0]
 
 # Iterating over each url and group
 for url_grp in links:
@@ -200,9 +200,8 @@ for url_grp in links:
             df = df[['STATION_NUMBER', 'STATION_NAME', 'Date', 'Time',
                     'Value', 'Parameter', 'Code', 'Comments']]
             
-            # If this is the first table in the list of names, overwriting the 
-            # table and setting columns
-            if url_name == names[0]:
+            # If this is the first table in the first group list of names, overwriting the table and setting columns
+            if url_grp == list(links.keys())[0] and url_name == names[0]:
                 df.head(0).to_sql('hourly', db, if_exists='replace', index = False)
 
             # Initialize an empty string buffer
