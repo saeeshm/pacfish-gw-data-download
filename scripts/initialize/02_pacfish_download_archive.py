@@ -26,18 +26,6 @@ options, args = parser.parse_args()
 # Reading credentials from file
 creds = load(open('credentials.json',))
 
-# Database connection
-db = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}?options=-csearch_path%3D{}'.format(
-    creds['user'],
-    creds['password'],
-    creds['host'],
-    creds['port'],
-    creds['dbname'],
-    creds['schema']
-))
-conn = db.raw_connection()
-cursor = conn.cursor()
-
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
 path_to_ref_tab = 'data/pacfish_station_data.csv'
@@ -60,6 +48,19 @@ dtype_dict = {
     'Code': 'str',
     'Comments': 'str',
 }
+
+#%% Starting database connection
+# Database connection
+db = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}?options=-csearch_path%3D{}'.format(
+    creds['user'],
+    creds['password'],
+    creds['host'],
+    creds['port'],
+    creds['dbname'],
+    creds['schema']
+))
+conn = db.raw_connection()
+cursor = conn.cursor()
 
 # %% ==== Reading the reference table for station names and IDs ====
 ref_tab = pd.read_csv(path_to_ref_tab)
@@ -90,7 +91,7 @@ hyd_codes = {name: requests.get(
     link).status_code for name, link in hyd_links.items()}
 print("Hydrometric links checked")
 press_codes = {name: requests.get(
-    link).status_code for name, link in hyd_links.items()}
+    link).status_code for name, link in press_links.items()}
 print("Pressure links checked")
 temp_codes = {name: requests.get(
     link).status_code for name, link in temp_links.items()}
@@ -258,3 +259,5 @@ with open(path_to_report, "w") as f:
     print('Temperature data station completion status:', file=f)
     print(pd.DataFrame.from_dict(success_status['Temperature'], orient='index').rename(
         columns={0: "Status"}), file=f)
+
+# %%

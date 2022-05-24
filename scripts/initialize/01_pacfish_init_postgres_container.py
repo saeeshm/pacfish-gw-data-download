@@ -10,9 +10,9 @@ from json import load
 
 #%% Resetting the pacfish schema
 
-def reset_pacfish_dbase():
+def reset_pacfish_dbase(creds_path):
     # Reading credentials
-    creds = load(open('./credentials.json', ))
+    creds = load(open(creds_path, ))
 
     # Setting the default schema to 'pacfish' unless another was specified in the file
     if 'schema' not in creds.keys():
@@ -36,13 +36,13 @@ def reset_pacfish_dbase():
     cursor.execute('DROP TABLE IF EXISTS pacfish.hourly_recent;')
     cursor.execute('DROP SCHEMA IF EXISTS pacfish;')
     cursor.execute('CREATE SCHEMA pacfish;')
-    cursor.execute('GRANT ALL ON SCHEMA pacfish TO postgres, saeesh;')
+    cursor.execute('GRANT ALL ON SCHEMA pacfish TO postgres, ' + creds['user'] + ';')
     
     print('Closing connection...')
     # Closing and returning
     cursor.close()
     return('Postgres schema reset')
     
-
+#%%
 if __name__ == "__main__":
-    reset_pacfish_dbase()
+    reset_pacfish_dbase('../../credentials.json')
