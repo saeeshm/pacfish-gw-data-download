@@ -1,0 +1,25 @@
+station_name,station_id,station_url_name,data_start,data_end,temp,staff_gauge,voltage,pressure,turbidity,lat,long,status,site_url
+Bedwell River,P_BEDWELL,Bedwell,9/30/2015 14:10,,TRUE,TRUE,TRUE,FALSE,FALSE,49.396527,-125.750866,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Bedwell/SiteInfo.aspx
+Black Creek,P_BLACK,BlackCreek,6/28/2016 15:00,,TRUE,TRUE,FALSE,FALSE,FALSE,49.84981,-125.100416,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/BlackCreek/SiteInfo.aspx
+Clemens Creek,P_CLEMENS,Clemens,7/15/2014 16:50,,TRUE,TRUE,TRUE,FALSE,FALSE,49.161428,-125.139618,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Clemens/SiteInfo.aspx
+Conuma River,P_CONUMA,Conuma,7/27/2016 17:45,,TRUE,TRUE,FALSE,FALSE,FALSE,49.808424,-126.363929,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Conuma/SiteInfo.aspx
+Elliot Creek,P_ELLIOT,Elliot,1/10/2021 0:00,,TRUE,TRUE,TRUE,FALSE,TRUE,50.869499,-124.693736,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-Pages/Elliot/SiteInfo.aspx
+Eve River,P_EVE,Eve,8/8/2017 14:00,,TRUE,TRUE,FALSE,FALSE,FALSE,50.353978,-126.203526,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Eve/SiteInfo.aspx
+French Creek,P_FRENCH,FrenchCreek,7/16/2018 22:00,,TRUE,TRUE,TRUE,FALSE,FALSE,49.344134,-124.370811,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/FrenchCreek/SiteInfo.aspx
+Fulmore River,P_FULMORE,Fulmore,4/29/2022 11:00,,TRUE,TRUE,FALSE,TRUE,FALSE,50.581514,-125.899858,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Fulmore/SiteInfo.aspx
+Haslam Creek,P_HASLAM,Haslam,6/16/2016 12:20,,TRUE,TRUE,FALSE,TRUE,FALSE,49.061018,-123.880302,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Haslam/SiteInfo.aspx
+Heydon River,P_HEYDON,Heydon,1/1/2019 6:00,,TRUE,TRUE,FALSE,TRUE,FALSE,50.572986,-125.592496,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Heydon/SiteInfo.aspx
+Kaouk River,P_KAOUK,Kaouk,9/12/2014 14:10,,TRUE,TRUE,FALSE,TRUE,FALSE,50.075622,-126.98908,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Kaouk/SiteInfo.aspx
+Leiner River,P_LEINER,Leiner,10/9/2018 12:00,,TRUE,TRUE,FALSE,TRUE,FALSE,49.917909,-126.620831,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Leiner/SiteInfo.aspx
+Nahmint River,P_NAHMINT,Nahmint,5/5/2015 10:20,,TRUE,TRUE,FALSE,FALSE,FALSE,49.082785,-124.921137,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Nahmint/SiteInfo.aspx
+U Nimpkish,P_U_NIMPKISH,Nimpkish,6/15/2015 13:30,,TRUE,TRUE,FALSE,FALSE,FALSE,50.161472,-126.5315,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Nimpkish/SiteInfo.aspx
+L Nimpkish,P_L_NIMPKISH,NimpkishLower,6/15/2015 13:30,1/25/2022 22:00,TRUE,TRUE,FALSE,FALSE,FALSE,50.517833,-127.016915,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/NimpkishLower/SiteInfo.aspx
+Nitinat River,P_NITINAT,Nitinat,8/11/2021 15:00,,TRUE,TRUE,FALSE,TRUE,FALSE,48.856846,-124.654527,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Nitinat/SiteInfo.aspx
+Owikeno Lake,P_OWIKENO,Owikeno,9/22/2016 14:01,,TRUE,TRUE,TRUE,FALSE,FALSE,51.666344,-126.66923,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Owikeno/SiteInfo.aspx
+Phillips River,P_PHILLIPS,Phillips,9/12/2017 13:00,,TRUE,TRUE,FALSE,FALSE,FALSE,50.582717,-125.374583,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Phillips/SiteInfo.aspx
+Robertson Creek,P_ROBERTSON,Robertson,10/2/2014 12:40,,TRUE,TRUE,FALSE,FALSE,FALSE,49.339758,-124.98687,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Robertson/SiteInfo.aspx
+San Juan River,P_SANJUAN,SanJuan,5/5/2015 19:00,,TRUE,TRUE,TRUE,FALSE,FALSE,48.587846,-124.188485,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/SanJuan/SiteInfo.aspx
+Sproat River,P_SPROAT,Sproat,7/9/2013 16:50,,TRUE,TRUE,FALSE,TRUE,FALSE,49.290408,-124.903112,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Sproat/SiteInfo.aspx
+Stamp River,P_STAMP,Stamp,11/6/2013 10:30,,TRUE,TRUE,FALSE,TRUE,FALSE,49.332326,-124.918244,ACTIVE,http://pacfish.ca/wcviweather/Content+ACU-20Pages/Stamp/SiteInfo.aspx
+Burman River,P_BURMAN,,,,,,,,,49.60114041,-125.947733,INACTIVE,
+Shaw Creek,P_SHAW,,,,,,,,,48.92517475,-124.3933689,INACTIVE,

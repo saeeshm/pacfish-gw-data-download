@@ -11,10 +11,10 @@ script_archive/
 .spyproject/
 .vscode/
 __pycache__/
-data/
 geckodriver/
 
 geckodriver.log
 credentials.json
 update_report.txt
 .Rproj.user
+
