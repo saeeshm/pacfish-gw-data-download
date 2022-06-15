@@ -26,7 +26,7 @@ parser.add_option("-g", "--gecko", dest="geckopath", action="store", default='E:
 # %% ==== Initalizing global variables ====
 
 # Reading credentials from file
-creds = load(open('credentials.json',))
+creds = load(open('../../credentials.json',))
 
 # Setting the default schema to 'pacfish' unless another was specified in the file
 if 'schema' not in creds.keys():
@@ -39,16 +39,17 @@ db = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}?options=-csearch_path%3
     creds['host'],
     creds['port'],
     creds['dbname'],
+    creds['schema']
 ))
 conn = db.raw_connection()
 cursor = conn.cursor()
 
 # The path to the directory where the the update report from each run should be
 # stored. Defaults to the working directory
-path_to_report = 'update_report.txt'
+path_to_report = '../../update_report.txt'
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = 'data/pacfish_station_data.csv'
+path_to_ref_tab = '../../data/pacfish_station_data.csv'
 # How many days worth of data is required
 time_diff = timedelta(days=options.days)
 # Path to the geckodriver that runs firefox in automative mode

@@ -13,7 +13,7 @@ library(rjson)
 # ==== Reading data ====
 
 # Credentials files
-creds <- fromJSON(file = 'credentials.json')
+creds <- fromJSON(file = '../../credentials.json')
 
 # Setting default schema unless pre-specified
 if (is.null(creds$schema)) creds$schema <- 'pacfish'
