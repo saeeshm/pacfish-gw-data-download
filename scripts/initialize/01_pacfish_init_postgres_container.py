@@ -1,8 +1,7 @@
 # Author: Saeesh Mangwani
 # Date: 16/05/2022
 
-# Description: A script for scraping Pacfish Gauge and Temperature data and
-# adding it to existing datatables.
+# Description: Deleting and remaking the postgres schema containing pacfish data, to allow for a full database reset.
 
 #%% Loading libraries
 import psycopg2

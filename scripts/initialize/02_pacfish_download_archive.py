@@ -1,8 +1,7 @@
 # Author: Saeesh Mangwani
 # Date: 16/05/2022
 
-# Description: A script for scraping Pacfish Gauge and Temperature data and
-# adding it to existing datatables.
+# Description: Downloading the historical archive of Pacfish data and adding to the postgres schema
 # %% ==== Loading libraries ====
 import requests
 import pandas as pd
