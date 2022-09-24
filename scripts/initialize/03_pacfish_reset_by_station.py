@@ -4,6 +4,9 @@
 # Description: Re-downloading the entire historical archive for a single pacfish station and resetting it's data in the postgres schema
 
 # %% ==== Loading libraries ====
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parent.parent.parent)
 import requests
 import pandas as pd
 from datetime import datetime

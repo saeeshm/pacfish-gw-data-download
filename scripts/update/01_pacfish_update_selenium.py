@@ -4,6 +4,9 @@
 # Description: A script for scraping Pacfish Gauge and Temperature data and
 # adding it to existing datatables.
 # %% ==== Loading libraries ====
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parent.parent.parent)
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
@@ -13,20 +16,20 @@ from io import StringIO
 from optparse import OptionParser
 from sqlalchemy import create_engine
 from json import load
-from update_help_funcs import format_station_data, get_urls_by_variable, check_success_status
+from scripts.update.update_help_funcs import format_station_data, get_urls_by_variable, check_success_status
 
 #%% Initializing option parsing
 parser = OptionParser()
 parser.add_option("-d", "--days", dest="days", action="store", default=30,
                   help="The number of days before today for which data need to be downloaded")
-parser.add_option("-g", "--gecko", dest="geckopath", action="store", default='E:/saeeshProjects/_webdrivers/geckodriver/geckodriver',
+parser.add_option("-g", "--gecko", dest="geckopath", action="store", default='geckodriver/geckodriver',
                   help="Path to geckodriver, which opens an automated firefox browser")
 (options, args) = parser.parse_args()
 
 # %% ==== Initalizing global variables ====
 
 # Reading credentials from file
-creds = load(open('../../credentials.json',))
+creds = load(open('credentials.json',))
 
 # Setting the default schema to 'pacfish' unless another was specified in the file
 if 'schema' not in creds.keys():
@@ -46,10 +49,10 @@ cursor = conn.cursor()
 
 # The path to the directory where the the update report from each run should be
 # stored. Defaults to the working directory
-path_to_report = '../../update_report.txt'
+path_to_report = 'update_report.txt'
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = '../../data/pacfish_station_data.csv'
+path_to_ref_tab = 'data/pacfish_station_data.csv'
 # How many days worth of data is required
 time_diff = timedelta(days=options.days)
 # Path to the geckodriver that runs firefox in automative mode

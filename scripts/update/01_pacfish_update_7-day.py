@@ -4,6 +4,9 @@
 # Description: A script for scraping Pacfish Gauge and Temperature data and
 # adding it to existing datatables.
 # %% ==== Loading libraries ====
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parent.parent.parent)
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
@@ -11,7 +14,7 @@ from bs4 import BeautifulSoup
 from io import StringIO
 from sqlalchemy import create_engine
 from json import load
-from update_help_funcs import format_station_data, get_urls_by_variable, check_success_status
+from scripts.update.update_help_funcs import format_station_data, get_urls_by_variable, check_success_status
 
 # %% ==== Initializing user facing global variables ====
 
@@ -45,7 +48,7 @@ path_to_report = 'update_report.txt'
 ref_tab = pd.read_csv(path_to_ref_tab)
 
 # Removing stations that don't exist
-ref_tab = ref_tab[~ref_tab.status.str.match('INACTIVE')]
+# ref_tab = ref_tab[~ref_tab.status.str.match('INACTIVE')]
 
 # Getting station names correctly formatted
 names = ref_tab["station_url_name"]
@@ -82,8 +85,8 @@ curr_data = curr_data.astype(dtype_dict)
 # A function that returns the station URL names for each station that has data
 # associated with a certain variable
 hyd_links = get_urls_by_variable('staff_gauge', ref_tab)
-press_links = get_urls_by_variable('pressure', ref_tab)
-temp_links = get_urls_by_variable('temp', ref_tab)
+press_links = get_urls_by_variable('barometric_pressure', ref_tab)
+temp_links = get_urls_by_variable('water_temperature', ref_tab)
 
 # Storing these themselves in a dict to allow for appropriate naming during the cleaning stage
 links = {
@@ -225,3 +228,4 @@ with open(path_to_report, "w") as f:
     print('Temperature data station completion status:', file=f)
     print(pd.DataFrame.from_dict(success_status['Temperature'], orient='index').rename(
         columns={0: "Status"}), file=f)
+# %%

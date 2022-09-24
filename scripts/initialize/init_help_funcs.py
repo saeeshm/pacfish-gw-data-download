@@ -137,7 +137,7 @@ def get_urls_by_variable(var, ref_tab):
     Getting urls for all stations that have data from the selected variable type
     """
     # Checking that variables is valid
-    vartypes = ['staff_gauge', 'temp', 'pressure']
+    vartypes = ['staff_gauge', 'water_temperature', 'barometric_pressure']
     errMessage = "var must be one of 'staff_gauge', 'temp', or 'pressure'"
     assert (var in vartypes), errMessage
     

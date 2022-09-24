@@ -4,6 +4,9 @@
 # Description: Updating the station metadata file to account for changes
 
 # %% ==== Loading libraries ====
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parent.parent.parent)
 import pandas as pd
 from datetime import datetime
 from selenium import webdriver
@@ -15,14 +18,14 @@ import json
 # %% ==== Initalizing global variables ====
 
 # Reading credentials from file
-creds = json.load(open('../../credentials.json',))
+creds = json.load(open('credentials.json',))
 
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = '../../data/pacfish_station_data.csv'
+path_to_ref_tab = 'data/pacfish_station_data.csv'
 
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = '../../geckodriver/geckodriver'
+gecko_path = 'geckodriver/geckodriver'
 
 # %% ==== Initializing Selenium browser ====
 
@@ -80,7 +83,7 @@ for i in range(0, len(stat_list)):
 dat = pd.DataFrame(outlist)
 
 # Removing stations where all data URLs are NA
-dat.dropna(axis=0, how='all', subset=['Staff Gauge', 'Water Temperature', 'Voltage', 'Barometric Pressure'], inplace=True)
+dat.dropna(axis=0, how='all', subset=['Staff Gauge', 'Water Temperature', 'Barometric Pressure'], inplace=True)
 
 # Getting url station names from URLs
 staturlnames = [re.search('(?<=20Pages\/)(\w+)', levelurl).group(1) \
@@ -90,6 +93,7 @@ dat['station_url_name'] = staturlnames
 # Creating station ids from station names - removing water body identifiers and whitespace
 statids = [re.sub('(RIVER|LAKE|CREEK|\s)', '',statname.upper()) \
     for statname in list(dat['station_name'])]
+    
 # Cleaning "upper" and "lower" tags
 def str_clean_ul(str):
     if re.search('(\w+)(\s?)(UPPER|LOWER)', str) is None:
@@ -205,3 +209,4 @@ dat.to_csv(path_to_ref_tab, index=False, na_rep='NA')
 
 # Closing browser
 browser.close()
+# %%

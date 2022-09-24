@@ -12,6 +12,7 @@ script_archive/
 .vscode/
 __pycache__/
 geckodriver/
+batch/
 
 geckodriver.log
 credentials.json

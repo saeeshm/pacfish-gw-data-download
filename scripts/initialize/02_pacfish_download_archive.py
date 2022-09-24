@@ -3,6 +3,9 @@
 
 # Description: Downloading the historical archive of Pacfish data and adding to the postgres schema
 # %% ==== Loading libraries ====
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parent.parent.parent)
 import requests
 import pandas as pd
 from datetime import datetime
@@ -12,10 +15,12 @@ from io import StringIO
 from optparse import OptionParser
 from sqlalchemy import create_engine
 from json import load
-from init_help_funcs import format_station_data, get_urls_by_variable, check_success_status
+from scripts.initialize.init_help_funcs import format_station_data, get_urls_by_variable, check_success_status
 
 # %% Initializing option parsing
 parser = OptionParser()
+parser.add_option("-c", "--creds", dest="creds", action="store", default='../../credentials.json',
+                  help="Path to database credentials to specify which database to initialize/reset")
 parser.add_option("-g", "--gecko", dest="geckopath", action="store", default='geckodriver/geckodriver',
                   help="Path to geckodriver, which opens an automated firefox browser")
 options, args = parser.parse_args()
@@ -23,7 +28,7 @@ options, args = parser.parse_args()
 # %% ==== Initalizing global variables ====
 
 # Reading credentials from file
-creds = load(open('credentials.json',))
+creds = load(open(options.creds,))
 
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
@@ -65,7 +70,7 @@ cursor = conn.cursor()
 ref_tab = pd.read_csv(path_to_ref_tab)
 
 # Removing stations that don't exist
-ref_tab = ref_tab[~ref_tab.status.str.match('INACTIVE')]
+# ref_tab = ref_tab[~ref_tab.status.str.match('INACTIVE')]
 
 # Getting station names correctly formatted
 names = ref_tab["station_url_name"]
@@ -75,8 +80,8 @@ names = ref_tab["station_url_name"]
 # A function that returns the station URL names for each station that has data
 # associated with a certain variable
 hyd_links = get_urls_by_variable('staff_gauge', ref_tab)
-press_links = get_urls_by_variable('pressure', ref_tab)
-temp_links = get_urls_by_variable('temp', ref_tab)
+press_links = get_urls_by_variable('barometric_pressure', ref_tab)
+temp_links = get_urls_by_variable('water_temperature', ref_tab)
 
 # Storing these themselves in a dict to allow for appropriate naming during the cleaning stage
 links = {
