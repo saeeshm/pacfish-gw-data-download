@@ -11,21 +11,20 @@ import pandas as pd
 from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from sqlalchemy import create_engine
+from json import load
 import re
-import json
 
 # %% ==== Initalizing global variables ====
 
-# Reading credentials from file
-creds = json.load(open('credentials.json',))
+# Reading filepaths from JSON
+fpaths = load(open('options/filepaths.json',))
 
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = 'data/pacfish_station_data.csv'
+path_to_ref_tab = fpaths['station_data']
 
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = 'geckodriver/geckodriver'
+gecko_path = fpaths['geckodriver']
 
 # %% ==== Initializing Selenium browser ====
 

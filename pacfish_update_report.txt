@@ -1,0 +1,90 @@
+===== Pacfish Hydrometric Data Scraper =====
+
+This file gives a summary of the most recent pacfish data update
+This run was a database UPDATE - run via the script "pacfish_update_7-day.py"
+
+Most recent scrape Date:  2023-05-10 07:40:16.355039
+All hydrometric links valid: True
+All pressure links valid: True
+All temperature links valid: True
+
+Hydrometric data station completion status:
+                Status
+Bedwell        success
+BlackCreek     success
+Clemens        success
+Conuma         success
+Docee          success
+Elliot         success
+Eve            success
+FrenchCreek    success
+Fulmore        success
+Haslam         success
+Heydon         success
+Kaouk          success
+Leiner         success
+Nahmint        success
+Nimpkish       success
+NimpkishLower  success
+Nitinat        success
+Owikeno        success
+Phillips       success
+Robertson      success
+SanJuan        success
+Sproat         success
+Stamp          success
+Tranquil       success
+
+Pressure data station completion status:
+                Status
+Bedwell        success
+BlackCreek     success
+Clemens        success
+Conuma         success
+Docee          success
+Elliot         success
+Eve            success
+FrenchCreek    success
+Fulmore        success
+Haslam         success
+Heydon         success
+Kaouk          success
+Leiner         success
+Nahmint        success
+Nimpkish       success
+NimpkishLower  success
+Nitinat        success
+Owikeno        success
+Phillips       success
+Robertson      success
+SanJuan        success
+Sproat         success
+Stamp          success
+Tranquil       success
+
+Temperature data station completion status:
+                               Status
+Bedwell                       success
+BlackCreek                    success
+Clemens                       success
+Conuma                        success
+Docee                         success
+Elliot                        success
+Eve                           success
+FrenchCreek                   success
+Fulmore                       success
+Haslam                        success
+Heydon                        success
+Kaouk                         success
+Leiner                        success
+Nahmint                       success
+Nimpkish                      success
+NimpkishLower  Error: No tables found
+Nitinat                       success
+Owikeno                       success
+Phillips                      success
+Robertson                     success
+SanJuan                       success
+Sproat                        success
+Stamp                         success
+Tranquil                      success

@@ -4,41 +4,36 @@
 # Description: Downloading the historical archive of Pacfish data and adding to the postgres schema
 # %% ==== Loading libraries ====
 import os
+import sys
 from pathlib import Path
 os.chdir(Path(__file__).parent.parent.parent)
+sys.path.append(os.getcwd())
 import requests
 import pandas as pd
 from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from io import StringIO
-from optparse import OptionParser
 from sqlalchemy import create_engine
 from json import load
-from scripts.initialize.init_help_funcs import format_station_data, get_urls_by_variable, check_success_status
-
-# %% Initializing option parsing
-parser = OptionParser()
-parser.add_option("-c", "--creds", dest="creds", action="store", default='../../credentials.json',
-                  help="Path to database credentials to specify which database to initialize/reset")
-parser.add_option("-g", "--gecko", dest="geckopath", action="store", default='geckodriver/geckodriver',
-                  help="Path to geckodriver, which opens an automated firefox browser")
-options, args = parser.parse_args()
 
 # %% ==== Initalizing global variables ====
 
-# Reading credentials from file
-creds = load(open(options.creds,))
+# Reading credentials from JSON
+creds = load(open('options/credentials.json',))
+
+# Reading filepaths from JSON
+fpaths = load(open('options/filepaths.json',))
 
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = 'data/pacfish_station_data.csv'
+path_to_ref_tab = fpaths['station_data']
 
 # Path to status report
-path_to_report = 'update_report.txt'
+path_to_report = fpaths['report']
 
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = options.geckopath
+gecko_path = fpaths['geckodriver']
 
 # Defining a dictionary of column data types (this will be appied to newly
 # downloaded data)
@@ -207,7 +202,7 @@ for url_grp in links:
             
             # If this is the first table in the first group list of names, overwriting the table and setting columns
             if url_grp == list(links.keys())[0] and url_name == names[0]:
-                df.head(0).to_sql('hourly', db, if_exists='replace', index = False)
+                df.head(0).to_sql('hourly', db, schema = creds['schema'], if_exists='replace', index = False)
 
             # Initialize an empty string buffer
             sio = StringIO()

@@ -5,8 +5,10 @@
 
 # %% ==== Loading libraries ====
 import os
+import sys
 from pathlib import Path
 os.chdir(Path(__file__).parent.parent.parent)
+sys.path.append(os.getcwd())
 import requests
 import pandas as pd
 from datetime import datetime
@@ -21,13 +23,6 @@ from init_help_funcs import format_station_data, get_urls_by_variable, check_suc
 # %% Initializing option parsing
 parser = OptionParser()
 parser.add_option(
-    "-g", "--gecko", 
-    dest="geckopath", 
-    action="store", 
-    default='geckodriver/geckodriver',
-    help="Path to geckodriver, which opens an automated firefox browser"
-)
-parser.add_option(
     "-s", "--station", 
     dest="station_id", 
     action="store", 
@@ -39,9 +34,11 @@ options, args = parser.parse_args()
 
 # %% ==== Initalizing global variables ====
 
-# Reading credentials from file
-# creds = load(open('../../credentials.json',))
-creds = load(open('credentials.json',))
+# Reading credentials from JSON
+creds = load(open('options/credentials.json',))
+
+# Reading filepaths from JSON
+fpaths = load(open('options/filepaths.json',))
 
 # Database connection
 db = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}?options=-csearch_path%3D{}'.format(
@@ -57,10 +54,10 @@ cursor = conn.cursor()
 
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = 'data/pacfish_station_data.csv'
+path_to_ref_tab = fpaths['station_data']
 
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = options.geckopath
+gecko_path = fpaths['geckodriver']
 
 # Defining a dictionary of column data types (this will be appied to newly
 # downloaded data)

@@ -5,8 +5,10 @@
 # adding it to existing datatables.
 # %% ==== Loading libraries ====
 import os
+import sys
 from pathlib import Path
 os.chdir(Path(__file__).parent.parent.parent)
+sys.path.append(os.getcwd())
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
@@ -22,14 +24,15 @@ from scripts.update.update_help_funcs import format_station_data, get_urls_by_va
 parser = OptionParser()
 parser.add_option("-d", "--days", dest="days", action="store", default=30,
                   help="The number of days before today for which data need to be downloaded")
-parser.add_option("-g", "--gecko", dest="geckopath", action="store", default='geckodriver/geckodriver',
-                  help="Path to geckodriver, which opens an automated firefox browser")
 (options, args) = parser.parse_args()
 
 # %% ==== Initalizing global variables ====
 
-# Reading credentials from file
-creds = load(open('credentials.json',))
+# Reading credentials from JSON
+creds = load(open('options/credentials.json',))
+
+# Reading filepaths from JSON
+fpaths = load(open('options/filepaths.json',))
 
 # Setting the default schema to 'pacfish' unless another was specified in the file
 if 'schema' not in creds.keys():
@@ -49,20 +52,23 @@ cursor = conn.cursor()
 
 # The path to the directory where the the update report from each run should be
 # stored. Defaults to the working directory
-path_to_report = 'update_report.txt'
+path_to_report = fpaths['report']
+
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = 'data/pacfish_station_data.csv'
+path_to_ref_tab =  fpaths['station_data']
+
 # How many days worth of data is required
-time_diff = timedelta(days=options.days)
+time_diff = timedelta(days=int(options.days))
+
 # Path to the geckodriver that runs firefox in automative mode
-gecko_path = options.geckopath
+gecko_path = fpaths['geckodriver']
 
 # %% ==== Reading the reference table for station names and IDs ====
 ref_tab = pd.read_csv(path_to_ref_tab)
 
 # Removing stations that don't exist
-ref_tab = ref_tab[~ref_tab.status.str.match('INACTIVE')]
+# ref_tab = ref_tab[~ref_tab.status.str.match('INACTIVE')]
 
 # Getting station names correctly formatted
 names = ref_tab["station_url_name"]
@@ -99,8 +105,8 @@ curr_data = curr_data.astype(dtype_dict)
 # A function that returns the station URL names for each station that has data
 # associated with a certain variable
 hyd_links = get_urls_by_variable('staff_gauge', ref_tab)
-press_links = get_urls_by_variable('pressure', ref_tab)
-temp_links = get_urls_by_variable('temp', ref_tab)
+press_links = get_urls_by_variable('barometric_pressure', ref_tab)
+temp_links = get_urls_by_variable('water_temperature', ref_tab)
 
 # Storing these themselves in a dict to allow for appropriate naming during the cleaning stage
 links = {

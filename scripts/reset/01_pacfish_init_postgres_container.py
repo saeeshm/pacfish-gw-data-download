@@ -9,19 +9,10 @@ from pathlib import Path
 os.chdir(Path(__file__).parent.parent.parent)
 import psycopg2
 from json import load
-from optparse import OptionParser
-
-#%% Initializing option parsing
-parser = OptionParser()
-parser.add_option("-c", "--creds", dest="creds", action="store", default='../../credentials.json',
-                  help="Path to database credentials to specify which database to initialize/reset")
-options, args = parser.parse_args()
 
 #%% Resetting the pacfish schema
 
-def reset_pacfish_dbase(creds_path):
-    # Reading credentials
-    creds = load(open(creds_path, ))
+def reset_pacfish_dbase(creds):
 
     # Setting the default schema to 'pacfish' unless another was specified in the file
     if 'schema' not in creds.keys():
@@ -47,6 +38,7 @@ def reset_pacfish_dbase(creds_path):
     cursor.execute('DROP SCHEMA IF EXISTS pacfish;')
     cursor.execute('CREATE SCHEMA pacfish;')
     cursor.execute('GRANT ALL ON SCHEMA pacfish TO postgres, ' + creds['user'] + ';')
+    cursor.execute('commit')
     
     print('Closing connection...')
     # Closing and returning
@@ -55,4 +47,6 @@ def reset_pacfish_dbase(creds_path):
     
 #%%
 if __name__ == "__main__":
-    reset_pacfish_dbase(options.creds)
+    # Reading credentials from JSON
+    creds = load(open('options/credentials.json',))
+    reset_pacfish_dbase(creds)

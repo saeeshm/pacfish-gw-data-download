@@ -4,18 +4,13 @@
 .Rhistory
 .RData
 .Ruserdata
-
-*.lnk
-*.bat
-script_archive/
-.spyproject/
-.vscode/
-__pycache__/
-geckodriver/
-batch/
-
-geckodriver.log
-credentials.json
-update_report.txt
 .Rproj.user
+
+scripts/__pycache__/
+scripts/update/__pycache__/
+scripts/reset/__pycache__/
+geckodriver.log
+scripts/reset/geckodriver.log
+options/credentials.json
+
 

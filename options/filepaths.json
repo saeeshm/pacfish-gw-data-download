@@ -1,0 +1,5 @@
+{
+    "station_data": "data/pacfish_station_data.csv",
+    "geckodriver": "geckodriver/geckodriver",
+    "report": "pacfish_update_report.txt"
+}

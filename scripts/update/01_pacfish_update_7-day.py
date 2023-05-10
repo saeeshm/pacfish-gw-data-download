@@ -5,21 +5,26 @@
 # adding it to existing datatables.
 # %% ==== Loading libraries ====
 import os
+import sys
 from pathlib import Path
 os.chdir(Path(__file__).parent.parent.parent)
+sys.path.append(os.getcwd())
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from io import StringIO
-from sqlalchemy import create_engine
 from json import load
+from sqlalchemy import create_engine
 from scripts.update.update_help_funcs import format_station_data, get_urls_by_variable, check_success_status
 
 # %% ==== Initializing user facing global variables ====
 
-# Reading credentials from file
-creds = load(open('credentials.json',))
+# Reading credentials from JSON
+creds = load(open('options/credentials.json',))
+
+# Reading filepaths from JSON
+fpaths = load(open('options/filepaths.json',))
 
 # Setting the default schema to 'pacfish' unless another was specified in the file
 if 'schema' not in creds.keys():
@@ -39,10 +44,10 @@ cursor = conn.cursor()
 
 # Path to the reference data table storing station names and ids. Defaults to
 # the data folder under the current working directory
-path_to_ref_tab = 'data/pacfish_station_data.csv'
+path_to_ref_tab =  fpaths['station_data']
 
 # Path to status report
-path_to_report = 'update_report.txt'
+path_to_report = fpaths['report']
 
 # %% ==== Initializing script global variables ====
 ref_tab = pd.read_csv(path_to_ref_tab)
