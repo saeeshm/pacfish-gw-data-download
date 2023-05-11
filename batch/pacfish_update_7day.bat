@@ -7,7 +7,10 @@ call conda activate gwenv
 :: Navigating to initialization directory
 cd /d E:\saeeshProjects\databases\pacfish-hydrometric
 
-:: Running the update script
+:: Updating station metadata (if new stations have been added, this scripts downloads the full archive for them as well)
+python scripts\reset\01_pacfish_update_station_data.py
+
+:: Running the 7-day data update script
 python scripts\update\01_pacfish_update_7-day.py
 
 :: Creating downstream databases

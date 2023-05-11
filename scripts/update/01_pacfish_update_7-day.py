@@ -52,9 +52,6 @@ path_to_report = fpaths['report']
 # %% ==== Initializing script global variables ====
 ref_tab = pd.read_csv(path_to_ref_tab)
 
-# Removing stations that don't exist
-# ref_tab = ref_tab[~ref_tab.status.str.match('INACTIVE')]
-
 # Getting station names correctly formatted
 names = ref_tab["station_url_name"]
 
@@ -82,7 +79,7 @@ cursor.execute(
 )
 # Reading the result
 curr_data = pd.DataFrame(cursor.fetchall(), columns=list(dtype_dict.keys()))
-# Ensuring type consistenct
+# Ensuring type consistency
 curr_data = curr_data.astype(dtype_dict)
 
 # %% ==== Preparing and validating data URLs ====

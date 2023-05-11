@@ -5,7 +5,10 @@ call C:\Users\OWNER\miniconda3\Scripts\activate.bat
 call conda activate gwenv
 
 :: Navigating to initialization directory
-cd /d E:\saeeshProjects\databases\pacfish-hydrometric\
+cd /d E:\saeeshProjects\databases\pacfish-hydrometric
+
+:: Updating station metadata (if new stations have been added, this scripts downloads the full archive for them as well)
+python scripts\reset\01_pacfish_update_station_data.py
 
 :: Running the update script
 python scripts\update\01_pacfish_update_selenium.py -d 30
