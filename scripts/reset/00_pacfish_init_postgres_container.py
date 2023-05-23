@@ -31,13 +31,13 @@ def reset_pacfish_dbase(creds):
 
     print('Resetting schema...')
     # Checking if the pacfish schema exists - creating if not, dropping and remaking if yes
-    cursor.execute('DROP TABLE IF EXISTS pacfish.hourly;')
-    cursor.execute('DROP TABLE IF EXISTS pacfish.daily;')
-    cursor.execute('DROP TABLE IF EXISTS pacfish.hourly_recent;')
-    cursor.execute('DROP TABLE IF EXISTS pacfish.station_metadata;')
-    cursor.execute('DROP SCHEMA IF EXISTS pacfish;')
-    cursor.execute('CREATE SCHEMA pacfish;')
-    cursor.execute('GRANT ALL ON SCHEMA pacfish TO postgres, ' + creds['user'] + ';')
+    cursor.execute('DROP TABLE IF EXISTS '+creds['schema']+'.hourly;')
+    cursor.execute('DROP TABLE IF EXISTS '+ creds['schema']+'.daily;')
+    cursor.execute('DROP TABLE IF EXISTS '+ creds['schema']+'.hourly_recent;')
+    cursor.execute('DROP TABLE IF EXISTS '+ creds['schema']+'.station_metadata;')
+    cursor.execute('DROP SCHEMA IF EXISTS '+ creds['schema']+';')
+    cursor.execute('CREATE SCHEMA '+ creds['schema']+';')
+    cursor.execute('GRANT ALL ON SCHEMA '+ creds['schema']+' TO postgres, ' + creds['user'] + ';')
     cursor.execute('commit')
     
     print('Closing connection...')

@@ -3,7 +3,7 @@
 This file gives a summary of the most recent pacfish data update
 This run was a database UPDATE - run via the script "pacfish_update_7-day.py"
 
-Most recent scrape Date:  2023-05-11 16:26:09.891482
+Most recent scrape Date:  2023-05-23 14:15:16.904147
 All hydrometric links valid: True
 All pressure links valid: True
 All temperature links valid: True

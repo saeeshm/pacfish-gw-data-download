@@ -73,10 +73,14 @@ dtype_dict = {
 }
 
 # %% ==== Reading the reference table for station names and IDs ====
+
+# Station being reset
+currstat = options.station_id
+
 ref_tab = pd.read_csv(path_to_ref_tab)
 
 # Selecting only the station of interest
-ref_tab = ref_tab[ref_tab.station_id.str.match(options.station_id)]
+ref_tab = ref_tab[ref_tab.station_id.str.match(currstat)]
 
 # Getting the url name of the station of interest
 url_name = ref_tab.station_url_name.iloc[0]
@@ -207,17 +211,23 @@ for url_grp in links:
         df = df[['STATION_NUMBER', 'STATION_NAME', 'Date', 'Time',
                 'Value', 'Parameter', 'Code', 'Comments']]
         
-        # Getting column names in query format
-        colsquery = df.Parameter.unique()[0]
-        for name in df.Parameter.unique()[1:]:
-            colsquery = "'{}', '{}'".format(colsquery, name)
+        # How many unique parameters for this datatype
+        upars = df.Parameter.unique()
+        if len(upars) == 1:
+            # Putting the parameter name in query format
+            colsquery = "'" + df.Parameter.unique()[0] + "'"
+        else:
+            # Putting all parameter names in query format
+            colsquery = df.Parameter.unique()[0]
+            for name in df.Parameter.unique()[1:]:
+                colsquery = "'{}', '{}'".format(colsquery, name)     
 
         # Dropping all data for this station from the database if present
         query = """
             delete from pacfish.hourly 
             where "STATION_NUMBER" = '{}' 
             and "Parameter" in ({})
-        """.format(ref_tab.station_id[0], colsquery)
+        """.format(currstat, colsquery)
         cursor.execute(query)
         conn.commit()
 

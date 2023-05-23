@@ -12,6 +12,7 @@ from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from json import load
+from io import StringIO
 from sqlalchemy import create_engine
 import re
 import subprocess
@@ -71,6 +72,8 @@ stat_list = [stat \
 ]
 
 # %% ==== Station names and available data URLs ====
+print("Getting all available station names and URLS...")
+
 outlist = list()
 # Extracting data from station lists
 for i in range(0, len(stat_list)):
@@ -124,6 +127,7 @@ statids = ['P_' + id for id in statids]
 dat['station_id'] = statids
 
 # %% ==== Data start and end dates ====
+print("Getting station start and end dates...")
 start_list = list()
 end_list = list()
 
@@ -162,7 +166,7 @@ dat['start_date'] = start_list
 dat['end_date'] = end_list
 
 # %% ==== Station coordinates ====
-
+print("Getting station coordinates...")
 # From the main station html, getting the script containing the Javascript with station coordinates
 scr = soup.find(attrs={'id':'main'}).find('script', attrs={'type': 'text/javascript'})
 
@@ -207,7 +211,7 @@ coords = parse_coords(matchstr)
 dat = dat.join(coords.set_index('station_id'), on = 'station_id', how = 'left')
 
 # %% ==== Cleaning and formatting metadata table ====
-
+print("Cleaning and formatting metadata table...")
 # Converting URL cols to boolean values indicating whether this datatype is available or not
 dat['Staff Gauge'] = dat['Staff Gauge'].notna()
 dat['Water Temperature'] = dat['Water Temperature'].notna()
@@ -221,30 +225,32 @@ dat.columns = [re.sub('\s', '_', name.lower()) for name in dat.columns]
 dat = dat[['station_id', 'station_name', 'station_url_name', 'start_date', 'end_date', 'water_temperature', 'staff_gauge', 'voltage', 'barometric_pressure', 'lat', 'long','site_info']]
 
 # %% ==== Checking for new stations since last update ====
-
-# Querying current station table
+print("Updating metadata table in Postgres...")
 try:
-    cursor.execute("select * from pacfish.station_metadata")
+    cursor.execute("select * from " + creds['schema'] + ".station_metadata")
     curr_stats = pd.DataFrame(cursor.fetchall(), columns=dat.columns)
+    conn.commit()
     # Comparing current station names with new names to get new stations
     new_stats = set(dat.station_id).difference(set(curr_stats.station_id))
     # Replacing station metadata file with the new file
-    dat.to_sql('station_metadata', db, schema = creds['schema'], if_exists='replace', index = False, index_label=dat.columns)
+    dat.to_sql('station_metadata', db, schema = creds['schema'], if_exists='replace', index = False, method='multi', chunksize=1000)
 except:
     print('No pre-existing station data. Adding the new metadata file directly.')
-    dat.to_sql('station_metadata', db, schema = creds['schema'], if_exists='replace', index = False, index_label=dat.columns)
+   # Replacing station metadata file with the new file
+    dat.to_sql('station_metadata', db, schema = creds['schema'], if_exists='replace', index = False, method='multi', chunksize=1000)
+    # Appending the data from the buffer
     new_stats = set(dat.station_id)
 
-
 # %% ==== Calling an archive reset for all new stations ====
+print("Getting the full archive for any new stations...")
 if len(new_stats) > 0:
     for statid in new_stats:
-        print('Getting the full timeseries for new station: ' + statid)
-        subprocess.run(args = ('python scripts/reset/03_pacfish_reset_by_station.py -s "' + statid +'"'), shell=True)
+        print('Getting timeseries for station: ' + statid)
+        subprocess.run(args = ('python scripts/reset/02_pacfish_reset_by_station.py -s "' + statid +'"'), shell=True)
 
 # %% Writing metadata file to disk
 dat.to_csv(path_to_ref_tab, index=False, na_rep='NA')
-
 # Closing browser
 browser.close()
+print("Pacfish station updates complete")
 # %%
