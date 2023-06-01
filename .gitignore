@@ -6,6 +6,9 @@
 .Ruserdata
 .Rproj.user
 
+pacfish_update_report.txt
+
+data/
 scripts/__pycache__/
 scripts/update/__pycache__/
 scripts/reset/__pycache__/
