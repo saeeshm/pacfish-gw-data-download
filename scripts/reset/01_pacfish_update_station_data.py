@@ -247,7 +247,8 @@ if len(new_stats) > 0:
     for statid in new_stats:
         print('Getting timeseries for station: ' + statid)
         subprocess.run(args = ('python scripts/reset/02_pacfish_reset_by_station.py -s "' + statid +'"'), shell=True)
-
+else:
+    print("No new stations since last update.")
 # %% Writing metadata file to disk
 dat.to_csv(path_to_ref_tab, index=False, na_rep='NA')
 # Closing browser

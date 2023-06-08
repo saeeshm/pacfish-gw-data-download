@@ -1,66 +1,66 @@
 ===== Pacfish Hydrometric Data Scraper =====
 
 This file gives a summary of the most recent pacfish data update
-This run was a database UPDATE - run via the script "pacfish_update_selenium.py"
+This run was a database UPDATE - run via the script "pacfish_update_7-day.py"
 
-Last scrape Date:  2023-06-01 10:36:58.644142
+Most recent scrape Date:  2023-06-01 14:34:17.774050
 All hydrometric links valid: True
 All pressure links valid: True
 All temperature links valid: True
 
 Hydrometric data station completion status:
-                               Status
-Bedwell                       success
-BlackCreek                    success
-Clemens                       success
-Conuma                        success
-Docee          Error: No tables found
-Elliot                        success
-Eve                           success
-FrenchCreek                   success
-Fulmore                       success
-Haslam                        success
-Heydon                        success
-Kaouk          Error: No tables found
-Leiner                        success
-Nahmint                       success
-Nimpkish       Error: No tables found
-NimpkishLower                 success
-Nitinat                       success
-Owikeno                       success
-Phillips                      success
-Robertson                     success
-SanJuan                       success
-Sproat                        success
-Stamp                         success
-Tranquil                      success
+                Status
+Bedwell        success
+BlackCreek     success
+Clemens        success
+Conuma         success
+Docee          success
+Elliot         success
+Eve            success
+FrenchCreek    success
+Fulmore        success
+Haslam         success
+Heydon         success
+Kaouk          success
+Leiner         success
+Nahmint        success
+Nimpkish       success
+NimpkishLower  success
+Nitinat        success
+Owikeno        success
+Phillips       success
+Robertson      success
+SanJuan        success
+Sproat         success
+Stamp          success
+Tranquil       success
 
 Pressure data station completion status:
-                               Status
-Bedwell                       success
-BlackCreek                    success
-Clemens                       success
-Conuma                        success
-Docee          Error: No tables found
-Elliot                        success
-Eve                           success
-FrenchCreek                   success
-Fulmore                       success
-Haslam                        success
-Heydon                        success
-Kaouk          Error: No tables found
-Leiner                        success
-Nahmint                       success
-Nimpkish                      success
-NimpkishLower                 success
-Nitinat                       success
-Owikeno                       success
-Phillips                      success
-Robertson                     success
-SanJuan                       success
-Sproat                        success
-Stamp                         success
-Tranquil                      success
+                Status
+Bedwell        success
+BlackCreek     success
+Clemens        success
+Conuma         success
+Docee          success
+Elliot         success
+Eve            success
+FrenchCreek    success
+Fulmore        success
+Haslam         success
+Heydon         success
+Kaouk          success
+Leiner         success
+Nahmint        success
+Nimpkish       success
+NimpkishLower  success
+Nitinat        success
+Owikeno        success
+Phillips       success
+Robertson      success
+SanJuan        success
+Sproat         success
+Stamp          success
+Tranquil       success
 
 Temperature data station completion status:
                                Status
@@ -68,17 +68,17 @@ Bedwell                       success
 BlackCreek                    success
 Clemens                       success
 Conuma                        success
-Docee          Error: No tables found
+Docee                         success
 Elliot                        success
 Eve                           success
 FrenchCreek                   success
 Fulmore                       success
 Haslam                        success
 Heydon                        success
-Kaouk          Error: No tables found
+Kaouk                         success
 Leiner                        success
 Nahmint                       success
-Nimpkish       Error: No tables found
+Nimpkish                      success
 NimpkishLower  Error: No tables found
 Nitinat                       success
 Owikeno                       success
