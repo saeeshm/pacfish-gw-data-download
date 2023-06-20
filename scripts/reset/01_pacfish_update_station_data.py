@@ -234,12 +234,14 @@ try:
     new_stats = set(dat.station_id).difference(set(curr_stats.station_id))
     # Replacing station metadata file with the new file
     dat.to_sql('station_metadata', db, schema = creds['schema'], if_exists='replace', index = False, method='multi', chunksize=1000)
+    conn.commit()
 except:
     print('No pre-existing station data. Adding the new metadata file directly.')
    # Replacing station metadata file with the new file
     dat.to_sql('station_metadata', db, schema = creds['schema'], if_exists='replace', index = False, method='multi', chunksize=1000)
     # Appending the data from the buffer
     new_stats = set(dat.station_id)
+    conn.commit()
 
 # %% ==== Calling an archive reset for all new stations ====
 print("Getting the full archive for any new stations...")
