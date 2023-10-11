@@ -126,8 +126,8 @@ def format_station_data(df, url_grp, url_name, ref_tab):
         df.rename(columns={df.columns[1]: 'Value'}, inplace=True)
 
     # Finally, adding columns for station name and station ID by referencing the reference table
-    df['STATION_NAME'] = ref_tab.loc[ref_tab['station_url_name'] == url_name].iloc[0, 0]
-    df['STATION_NUMBER'] = ref_tab.loc[ref_tab['station_url_name'] == url_name].iloc[0, 1]
+    df['STATION_NAME'] = ref_tab.loc[ref_tab['station_url_name'] == url_name].station_name.iloc[0]
+    df['STATION_NUMBER'] = ref_tab.loc[ref_tab['station_url_name'] == url_name].station_id.iloc[0]
 
     # Returning the cleaned df
     return(df)

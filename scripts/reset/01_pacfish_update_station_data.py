@@ -12,7 +12,6 @@ from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from json import load
-from io import StringIO
 from sqlalchemy import create_engine
 import re
 import subprocess
@@ -237,6 +236,7 @@ try:
     conn.commit()
 except:
     print('No pre-existing station data. Adding the new metadata file directly.')
+    fullReset = True
    # Replacing station metadata file with the new file
     dat.to_sql('station_metadata', db, schema = creds['schema'], if_exists='replace', index = False, method='multi', chunksize=1000)
     # Appending the data from the buffer
@@ -248,7 +248,11 @@ print("Getting the full archive for any new stations...")
 if len(new_stats) > 0:
     for statid in new_stats:
         print('Getting timeseries for station: ' + statid)
-        subprocess.run(args = ('python scripts/reset/02_pacfish_reset_by_station.py -s "' + statid +'"'), shell=True)
+        if (statid == list(new_stats)[0]) and fullReset:
+            print("Also resetting/re-creating the hourly table.")
+            subprocess.run(args = ('python scripts/reset/02_pacfish_reset_by_station.py -r -s "' + statid +'"'), shell=True)
+        else:
+            subprocess.run(args = ('python scripts/reset/02_pacfish_reset_by_station.py -s "' + statid +'"'), shell=True)
 else:
     print("No new stations since last update.")
 # %% Writing metadata file to disk

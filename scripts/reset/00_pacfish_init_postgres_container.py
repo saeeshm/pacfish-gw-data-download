@@ -43,10 +43,12 @@ def reset_pacfish_dbase(creds):
     print('Closing connection...')
     # Closing and returning
     cursor.close()
-    return('Postgres schema reset')
+    print('Postgres schema reset')
+    return()
     
 #%%
 if __name__ == "__main__":
     # Reading credentials from JSON
     creds = load(open('options/credentials.json',))
     reset_pacfish_dbase(creds)
+# %%

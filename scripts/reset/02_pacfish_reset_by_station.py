@@ -23,6 +23,15 @@ from scripts.reset.init_help_funcs import format_station_data, get_urls_by_varia
 # %% Initializing option parsing
 parser = OptionParser()
 parser.add_option(
+    "-r", "--reset", 
+    dest="doReset", 
+    action="store_true", 
+    default=False,
+    help="""
+    Pacfish station id whose archive is being reset
+    """
+)
+parser.add_option(
     "-s", "--station", 
     dest="station_id", 
     action="store", 
@@ -77,6 +86,10 @@ dtype_dict = {
 # Station being reset
 currstat = options.station_id
 
+# Should the hourly database be reset
+doReset = options.doReset
+
+# Reading metadata
 ref_tab = pd.read_csv(path_to_ref_tab)
 
 # Selecting only the station of interest
@@ -221,6 +234,10 @@ for url_grp in links:
             colsquery = df.Parameter.unique()[0]
             for name in df.Parameter.unique()[1:]:
                 colsquery = "'{}', '{}'".format(colsquery, name)     
+
+        # If a full reset was requested with this station reset, clearing and remaking the hourly table
+        if doReset:
+            df.head(0).to_sql('hourly', db, schema = creds['schema'], if_exists='replace', index = False)
 
         # Dropping all data for this station from the database if present
         query = """
